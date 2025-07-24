@@ -38,7 +38,8 @@ class FinDashContext:
             raise Exception("Invalid username or password.")
         
     def _get_sql_context(self):
-        sql_context = get_secret("fd-sql-credentials")
+        sql_tokens = os.getenv("SQL_TOKENS")
+        sql_context = get_secret(sql_tokens)
         if not sql_context:
             self.logger.log("Failed to retrieve SQL context from secrets manager.")
             raise Exception("SQL context not found.")
