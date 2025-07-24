@@ -45,4 +45,24 @@ The package uses YFinance for data fetching, which means it uses the same inputs
 
 Assets are any valid ticker that YFinance stores. This can be stocks, ETFs, and crypto currencies. 
 
+## Installation Instructions
+To install the FinDash package, you can download the .tar.gz file from the resources section and then run: 
+```
+pip install <<download_name>>
+```
+This will then allow you to import context and other modules as needed. 
+
+## Configuration
+In order to use the FinDash framework, you will need to have specific environment variables that the context can use to initialize. These configurations allow it to access AWS, SQL, and Databricks. You can set up your environment variables as such. 
+```
+AWS_ACCESS_KEY=<<AWS ACCESS KEY>>
+AWS_SECRET_ACCESS_KEY=<<AWS SECRET ACCESS>>
+AWS_REGION=<<AWS REGION NAME>>
+USERNAME=<<SQL USERNAME>>
+PASSWORD=<<SQL PASSWORD>>
+DATABRICKS_TOKENS=<<STORED DATABRICKS TOKENS IN SECRETS MANAGER>>
+```
+
+## 🤝 Contributing
+Contributions are welcome! Please fork the repo, create a new branch, and submit a pull request.
 
