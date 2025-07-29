@@ -38,10 +38,10 @@ class AuthorizationContext:
             self.__username = args.username
             self.__email = args.email
             self.__phone = args.phone
-            if not self._validate_phone():
+            if not self._validate_phone(self.__phone):
                 self.logger.log(f"Invalid phone number.")
                 return 'Invalid phone number.'
-            if not self._validate_email():
+            if not self._validate_email(self.__email):
                 self.logger.log(f"Invalid email address.")
                 return 'Invalid email address.'
             data = self.database.execute(
@@ -60,14 +60,14 @@ class AuthorizationContext:
         )
         return not data.empty
 
-    def _validate_email(self):
+    def _validate_email(self, email):
         try:
-            EmailStr.validate(self.__email)
+            EmailStr.validate(email)
             return True
         except ValueError:
             return False
 
-    def _validate_phone(self):
-        if len(self.__phone) != 10 or not self.__phone.isdigit():
+    def _validate_phone(self, phone):
+        if len(phone) != 10 or not phone.isdigit():
             return False
         return True
