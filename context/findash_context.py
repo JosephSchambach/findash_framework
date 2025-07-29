@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from context.logger import FinDashLogger
 from sub_context.sql_context import SQLContext
 from sub_context.s3_context import S3Context
+from authorization.authorization_context import AuthorizationContext
 from api.api import API
 from dotenv import load_dotenv
 from findash_utilities import get_secret
@@ -20,6 +21,7 @@ class FinDashContext:
         self._get_sql_context()
         self._get_s3_context()
         self._get_api_context()
+        self._get_authorization()
 
     def __validate_user(self):
         username = os.getenv("USERNAME")
@@ -36,6 +38,9 @@ class FinDashContext:
         else:
             self.logger.log(f"User {username} validation failed.")
             raise Exception("Invalid username or password.")
+        
+    def _get_authorization(self):
+        self.authorization = AuthorizationContext(database=self.sql_context, logger=self.logger)
         
     def _get_sql_context(self):
         sql_tokens = os.getenv("SQL_TOKENS")
