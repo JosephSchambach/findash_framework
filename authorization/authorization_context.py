@@ -61,6 +61,8 @@ class AuthorizationContext:
         return not data.empty
 
     def _validate_email(self, email):
+        if email is None or len(email) == 0:
+            return False
         try:
             EmailStr.validate(email)
             return True
@@ -68,6 +70,6 @@ class AuthorizationContext:
             return False
 
     def _validate_phone(self, phone):
-        if len(phone) != 10 or not phone.isdigit():
+        if phone is None or len(phone) != 10 or not phone.isdigit():
             return False
         return True
