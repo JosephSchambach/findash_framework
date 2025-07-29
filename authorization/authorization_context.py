@@ -9,20 +9,19 @@ class AuthorizationContext:
 
     def validate(self, args, log=False):
         if isinstance(args, ValidateUser):
-            self.logger.log(f"Validating user: {args.username}")
             self.__password = b64.b64decode(args.password.encode()).decode()
             data = self.database.pandas_select(
                 "select id from user where username = %s and password = %s",
                 (args.username, self.__password)
             )
             if not data.empty:
-                self.logger.log(f"User {args.username} validated successfully.")
+                self.logger.log(f"User validated successfully.")
                 self._user_id = data.iloc[0]['id']
                 self._username = args.username
                 self._password = args.password
                 return True
             else:
-                self.logger.log(f"User {args.username} validation failed.")
+                self.logger.log(f"User validation failed.")
                 return False
         else:
             self.logger.log("Invalid arguments for validation")
@@ -30,9 +29,9 @@ class AuthorizationContext:
     
     def register(self, args, log=False):
         if isinstance(args, RegisterUser):
-            self.logger.log(f"Registering user: {args.username}")
+            self.logger.log(f"Registering user")
             if self._check_for_username(args.username):
-                self.logger.log(f"Username {args.username} already exists.")
+                self.logger.log(f"Username already exists.")
                 return False
             self.__password = args.password
             self.__username = args.username
