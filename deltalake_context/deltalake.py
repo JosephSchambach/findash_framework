@@ -1,4 +1,4 @@
-from etl_config import etl_config
+from deltalake_context.etl_config import etl_config
 
 class Deltalake:
     def __init__(self, s3_context, sql_context, logger):

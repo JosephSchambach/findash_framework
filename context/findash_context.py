@@ -7,7 +7,7 @@ from context.logger import FinDashLogger
 from sub_context.sql_context import SQLContext
 from sub_context.s3_context import S3Context
 from authorization.authorization_context import AuthorizationContext
-from deltalake.deltalake import Deltalake
+from deltalake_context.deltalake import Deltalake
 from api.api import API
 from dotenv import load_dotenv
 from findash_utilities import get_secret
