@@ -7,6 +7,7 @@ from context.logger import FinDashLogger
 from sub_context.sql_context import SQLContext
 from sub_context.s3_context import S3Context
 from authorization.authorization_context import AuthorizationContext
+from deltalake_context.deltalake import Deltalake
 from api.api import API
 from dotenv import load_dotenv
 from findash_utilities import get_secret
@@ -22,6 +23,14 @@ class FinDashContext:
         self._get_s3_context()
         self._get_api_context()
         self._get_authorization()
+        self._get_deltalake_context()
+        
+    def _get_deltalake_context(self):
+        self.deltalake = Deltalake(
+            s3_context=self.s3_context,
+            sql_context=self.sql_context,
+            logger=self.logger
+        )
 
     def __validate_user(self):
         username = os.getenv("USERNAME")
