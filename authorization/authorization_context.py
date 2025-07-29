@@ -1,4 +1,5 @@
 from models.authorization_models import ValidateUser, RegisterUser
+from pydantic import EmailStr
 import base64 as b64
 
 class AuthorizationContext:
@@ -19,10 +20,10 @@ class AuthorizationContext:
                 self._user_id = data.iloc[0]['id']
                 self._username = args.username
                 self._password = args.password
-                return True
+                return 'User validated successfully.'
             else:
                 self.logger.log(f"User validation failed.")
-                return False
+                return 'User validation failed.'
         else:
             self.logger.log("Invalid arguments for validation")
             raise ValueError("Invalid arguments for validation")
@@ -37,11 +38,17 @@ class AuthorizationContext:
             self.__username = args.username
             self.__email = args.email
             self.__phone = args.phone
+            if not self._validate_phone():
+                self.logger.log(f"Invalid phone number.")
+                return 'Invalid phone number.'
+            if not self._validate_email():
+                self.logger.log(f"Invalid email address.")
+                return 'Invalid email address.'
             data = self.database.execute(
                 "insert into user (username, password, email, phone) values (%s, %s, %s, %s)",
                 (self.__username, self.__password, self.__email, self.__phone)
             )
-            return True
+            return 'User registered successfully.'
         else:
             self.logger.log("Invalid arguments for registration")
             raise ValueError("Invalid arguments for registration")
@@ -52,3 +59,15 @@ class AuthorizationContext:
             (username,)
         )
         return not data.empty
+
+    def _validate_email(self):
+        try:
+            EmailStr.validate(self.__email)
+            return True
+        except ValueError:
+            return False
+
+    def _validate_phone(self):
+        if len(self.__phone) != 10 or not self.__phone.isdigit():
+            return False
+        return True
